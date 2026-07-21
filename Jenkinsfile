@@ -88,6 +88,7 @@ pipeline {
             echo "Cleanup completed"
             '''
             echo '---archiving artifacts---'
+            // Older ways
             //archiveArtifacts(
             //     artifacts: '**/terget/*.jar/, **/dist/**/*',
             //    allowEmptyArchive: true
