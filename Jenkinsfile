@@ -94,32 +94,63 @@ pipeline {
             echo '----Build Successful----'
             echo "Build ${env.BUILD_NUMBER} completed successfully"
             // send github notify
-            githubNotify(
-                status: 'SUCCESS',
-                description: "✅ Build #${env.BUILD_NUMBER} succeeded",
-                context: "Jenkins CI",
-                credentialsId: 'github-pat'
-            )
+            script {
+                def commitSha = sh (script: 'git rev-parse HEAD', returnStdout: true).trim()
+
+                githubNotify(
+                    status: 'SUCCESS',
+                    description: "✅ Build #${env.BUILD_NUMBER} succeeded",
+                    context: "Jenkins CI",
+                    credentialsId: 'github-pat',
+                    repo: 'jenkins-parallel-demo',
+                    account: 'AmarGmail',
+                    sha: commitSha
+                )
+            }
+
         }
         failure {
             echo '----Build Failed----'
             echo "Build ${env.BUILD_NUMBER} failed!"
             //send failure to github
-            githubNotify(
-                status: 'FAILURE',
-                description: "❌ Build #${env.BUILD_NUMBER} failed",
-                context: "Jenkins CI",
-                credentialsId: "github-pat"
+            script {
+                /* groovylint-disable-next-line NoDef, VariableTypeRequired */
+                def commitSha = sh(
+                    script: 'git rev-prase HEAD',
+                    returnStdout: true
+                ).trim()
+                githubNotify(
+                    status: 'FAILURE',
+                    description: "❌ Build #${env.BUILD_NUMBER} failed",
+                    context: "Jenkins CI",
+                    credentialsId: "github-pat",
+                    repo: 'jenkins-parallel-demo',
+                    account: 'AmarGmail',
+                    sha: commitSha
                 )
+            }
         }
         aborted {
-            echo "--- Build Aborted---"
-            githubNotify(
-                status: "ERROR",
-                description: "⚠️ Build #${env.BUILD_NUMBER} was aborted",
-                context: 'Jenkins CI',
-                credentialsId: 'github-pat'
+            echo '--- Build Aborted---'
+
+            //notify git hub of abort
+            script {
+                /* groovylint-disable-next-line NoDef, VariableTypeRequired */
+                def commitSha = sh(
+                    script: 'git rev-parse HEAD',
+                    returnStdout: true
+                    ).trim()
+                githubNotify(
+                    status: "ERROR",
+                    description: "⚠️ Build #${env.BUILD_NUMBER} was aborted",
+                    context: 'Jenkins CI',
+                    credentialsId: 'github-pat',
+                    repo: 'jenkins-parallel-demo',
+                    account: 'AmarGmail',
+                    sha: commitSha
                 )
+            }
+
         }
     }
 }
