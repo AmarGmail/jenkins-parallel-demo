@@ -116,7 +116,7 @@ pipeline {
             script {
                 /* groovylint-disable-next-line NoDef, VariableTypeRequired */
                 def commitSha = sh(
-                    script: 'git rev-prase HEAD',
+                    script: 'git rev-parse HEAD',
                     returnStdout: true
                 ).trim()
                 githubNotify(
@@ -135,6 +135,7 @@ pipeline {
 
             //notify git hub of abort
             script {
+                /* groovylint-disable-next-line NoDef */
                 /* groovylint-disable-next-line NoDef, VariableTypeRequired */
                 def commitSha = sh(
                     script: 'git rev-parse HEAD',
