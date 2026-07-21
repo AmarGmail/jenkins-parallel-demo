@@ -87,14 +87,9 @@ pipeline {
             sleep 5
             echo "Cleanup completed"
             '''
-            echo '---archiving artifacts---'
-            // Older ways
-            //archiveArtifacts(
-            //     artifacts: '**/terget/*.jar/, **/dist/**/*',
-            //    allowEmptyArchive: true
-            //)
-            archiveArtifacts artifacts: '**/target/*.jar, **/dist/**/*', 
-                allowEmptyArchive: true
+//            echo '---archiving artifacts---'
+//            archiveArtifacts artifacts: '**/target/*.jar, **/dist/**/*', 
+//                allowEmptyArchive: true
 
         }
         success {
